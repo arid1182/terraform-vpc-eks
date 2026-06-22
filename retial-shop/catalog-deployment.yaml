@@ -28,6 +28,7 @@ spec:
         app.kubernetes.io/component: app
         app.kubernetes.io/owner: capclouds.com
     spec:
+      serviceAccount: catalog-db-sa
       securityContext:
         fsGroup: 1000
       containers:
@@ -52,10 +53,10 @@ spec:
           resources:
             limits:
               cpu: 200m
-              memory: 256Mi
+              memory: 128Mi
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 128Mi
           securityContext:
             capabilities:
               drop:
@@ -66,6 +67,21 @@ spec:
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
-
-
-
+          volumeMounts:
+            - name: aws-secrets
+              mountPath: /mnt/secrets-store
+              readOnly: true
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              export RETAIL_CATALOG_PERSISTENCE_USER=$(cat /mnt/secrets-store/MYSQL_USER);
+              export RETAIL_CATALOG_PERSISTENCE_PASSWORD=$(cat /mnt/secrets-store/MYSQL_PASSWORD);
+              echo "Starting Catalog service with secure DB credentials";
+              exec java -jar /app/catalog.jar
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "catalog-db-secrets"
