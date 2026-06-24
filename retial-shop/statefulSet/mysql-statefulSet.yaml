@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/component: statefulset
         app.kubernetes.io/owner: capclouds.com
     spec:
-      serviceAccount: catalog-db-sa
+      serviceAccount: catalog-mysql-sa
       securityContext:
         fsGroup: 999
       containers:
