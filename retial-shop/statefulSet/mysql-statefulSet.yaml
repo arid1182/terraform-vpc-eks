@@ -76,7 +76,7 @@ spec:
                 - bash
                 - -c
                 - |
-                - mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
+                  mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
             initialDelaySeconds: 20
             failureThreshold: 30    # 30 * 10s = 300s total startup
             periodSeconds: 10
@@ -87,7 +87,7 @@ spec:
                 - bash
                 - -c
                 - |
-                - mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
+                  mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
@@ -98,7 +98,7 @@ spec:
                 - bash
                 - -c
                 - |
-                - mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
+                  mysqladmin ping -h 127.0.0.1 -uroot -p"${MYSQL_ROOT_PASSWORD}"
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
