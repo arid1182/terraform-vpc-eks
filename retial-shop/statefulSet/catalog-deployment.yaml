@@ -70,7 +70,7 @@ spec:
             - name: aws-secrets
               mountPath: /mnt/secrets-store
               readOnly: true
-          command: ["bin/bash", "-c"]
+          command: ["/bin/bash", "-c"]
           args:
             - |
               export RETAIL_CATALOG_PERSISTENCE_USER=$(cat /mnt/secrets-store/MYSQL_USER);
