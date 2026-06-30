@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/component: statefulset
         app.kubernetes.io/owner: capclouds.com
     spec:
-      serviceAccount: catalog-mysql-sa
+      serviceAccountName: catalog-mysql-sa
       securityContext:
         fsGroup: 999
       containers:
@@ -39,8 +39,8 @@ spec:
           command: ["/bin/bash", "-c"]
           args:
             - |
-              export MYSQL_USER=$(cat /mnt/secrets-store/MYSQL-USER);
-              export MYSQL_PASSWORD=$(cat /mnt/secrets-store/MYSQL-PASSWORD);
+              export MYSQL_USER=$(cat /mnt/secrets-store/MYSQL_USER);
+              export MYSQL_PASSWORD=$(cat /mnt/secrets-store/MYSQL_PASSWORD);
               echo "Loaded secrets from AWS Secrets Manager. Starting MySQL with user=$MYSQL_USER";
               exec docker-entrypoint.sh mysqld
           ports:
