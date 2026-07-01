@@ -48,7 +48,7 @@ spec:
               containerPort: 3306
               protocol: TCP
           volumeMounts:
-            - name: data
+            - name: data-ebs
               mountPath: /var/lib/mysql
             - name: aws-secrets
               mountPath: /mnt/secrets-store
@@ -104,11 +104,20 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 6
       volumes: 
-        - name: data
-          emptyDir: {}
+        #- name: data
+          #emptyDir: {}
         - name: aws-secrets
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: "catalog-db-secrets"
+  volumeClaimTemplate:
+  - metadata:
+      name: data-ebs
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-storage-class"
+      resources:
+        requests:
+          storage: 20Gi
