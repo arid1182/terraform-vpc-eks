@@ -1,4 +1,4 @@
-# 10-03: Amazon RDS MySQL Database Integration with Catalog Microservice
+# Amazon RDS MySQL Database Integration with Catalog Microservice
 
 In this section, we will integrate our **Catalog microservice** with an **Amazon RDS MySQL database** instead of the in-cluster MySQL StatefulSet used in previous demos.
 
