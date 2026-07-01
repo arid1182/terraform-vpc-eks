@@ -112,7 +112,7 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: "catalog-db-secrets"
-  volumeClaimTemplate:
+  volumeClaimTemplates:
   - metadata:
       name: data-ebs
     spec:
