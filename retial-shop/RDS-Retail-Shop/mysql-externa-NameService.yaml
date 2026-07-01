@@ -1,4 +1,9 @@
 apiVersion: v1
 kind: ExternalService
 metadata:
-  name: 
+  name: mysql-statefulset
+spec:
+  type: ExternalName
+  externalName: XYZ
+  ports:
+    - port: 3306
