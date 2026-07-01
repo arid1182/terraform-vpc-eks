@@ -66,10 +66,10 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: "2Gi"
+              memory: "512Mi"
             requests:
               cpu: "500m"
-              memory: "1Gi"
+              memory: "512Mi"
           startupProbe:
             exec:
               command:
@@ -120,4 +120,4 @@ spec:
       storageClassName: "ebs-storage-class"
       resources:
         requests:
-          storage: 20Gi
+          storage: 5Gi
