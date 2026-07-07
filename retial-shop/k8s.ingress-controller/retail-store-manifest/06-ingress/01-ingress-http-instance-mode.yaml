@@ -27,5 +27,5 @@ spec:
   defaultBackend:
     service:
       name: ui-np
-    ports:
-      port: 80
+    port:
+      number: 80
