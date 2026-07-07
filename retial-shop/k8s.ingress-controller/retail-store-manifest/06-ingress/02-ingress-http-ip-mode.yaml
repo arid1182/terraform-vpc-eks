@@ -27,5 +27,5 @@ spec:
   defaultBackend:
     service:
       name: ui
-    ports:
-      port: 80
+    port:
+      number: 80
