@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    {{- include "ui.labels" . | nindent 4 }}
+    {{- include "ui.chartLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  strategy:
+    type: {{ .Values.deployment.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.deployment.strategy.maxUnavailable }}
+  selector:
+    matchLabels:
+      {{- include "ui.labels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: {{ .Values.deployment.prometheus.scrape | quote }}
+        prometheus.io/path: {{ .Values.deployment.prometheus.path }}
+        prometheus.io/port: {{ .Values.deployment.prometheus.port | quote }}
+      labels:
+        {{- include "ui.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        fsGroup: {{ .Values.deployment.podSecurityContext.fsGroup }}
+      containers:
+        - name: {{ .Values.deployment.container.name }}
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          env:
+            - name: JAVA_OPTS
+              value: {{ .Values.deployment.env.javaOpts | quote }}
+            - name: METADATA_KUBERNETES_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: METADATA_KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: METADATA_KUBERNETES_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.configMap.name }}
+          ports:
+            - name: {{ .Values.deployment.container.port.name }}
+              containerPort: {{ .Values.deployment.container.port.containerPort }}
+              protocol: {{ .Values.deployment.container.port.protocol }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployment.readinessProbe.path }}
+              port: {{ .Values.deployment.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.deployment.readinessProbe.initialDelaySeconds }}
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+          securityContext:
+            capabilities:
+              add:
+                {{- toYaml .Values.deployment.securityContext.capabilities.add | nindent 16 }}
+              drop:
+                {{- toYaml .Values.deployment.securityContext.capabilities.drop | nindent 16 }}
+            readOnlyRootFilesystem: {{ .Values.deployment.securityContext.readOnlyRootFilesystem }}
+            runAsNonRoot: {{ .Values.deployment.securityContext.runAsNonRoot }}
+            runAsUser: {{ .Values.deployment.securityContext.runAsUser }}
+          volumeMounts:
+            - mountPath: {{ .Values.deployment.tmpVolume.mountPath }}
+              name: {{ .Values.deployment.tmpVolume.name }}
+      volumes:
+        - name: {{ .Values.deployment.tmpVolume.name }}
+          emptyDir: {}

@@ -1,0 +1,51 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+  labels:
+    {{- include "ui.ingress.labels" . | nindent 4 }}
+    {{- include "ui.chartLabels" . | nindent 4 }}
+  annotations:
+    # ── Load Balancer ────────────────────────────────
+    alb.ingress.kubernetes.io/load-balancer-name: {{ .Values.ingress.alb.loadBalancerName }}
+    # ── Core Settings ────────────────────────────────
+    alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.alb.scheme }}
+    alb.ingress.kubernetes.io/target-type: {{ .Values.ingress.alb.targetType }}
+    # ── Health Check ─────────────────────────────────
+    alb.ingress.kubernetes.io/healthcheck-protocol: {{ .Values.ingress.alb.healthCheck.protocol }}
+    alb.ingress.kubernetes.io/healthcheck-port: {{ .Values.ingress.alb.healthCheck.port }}
+    alb.ingress.kubernetes.io/healthcheck-path: {{ .Values.ingress.alb.healthCheck.path }}
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: {{ .Values.ingress.alb.healthCheck.intervalSeconds | quote }}
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: {{ .Values.ingress.alb.healthCheck.timeoutSeconds | quote }}
+    alb.ingress.kubernetes.io/success-codes: {{ .Values.ingress.alb.healthCheck.successCodes | quote }}
+    alb.ingress.kubernetes.io/healthy-threshold-count: {{ .Values.ingress.alb.healthCheck.healthyThresholdCount | quote }}
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: {{ .Values.ingress.alb.healthCheck.unhealthyThresholdCount | quote }}
+    {{- with .Values.ingress.alb.extraAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  defaultBackend:
+    service:
+      name: {{ .Values.ingress.defaultBackend.serviceName }}
+      port:
+        number: {{ .Values.ingress.defaultBackend.servicePort }}
+  {{- if .Values.ingress.rules }}
+  rules:
+    {{- range .Values.ingress.rules }}
+    - host: {{ .host }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
