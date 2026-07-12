@@ -1,1 +1,22 @@
+apiService: v1
+kind: Service 
+metadata:
+  name: carts-dynamodb-svc
+  labels:
+    app.kubernetes.io/name: carts-dynamodb-svc
+    app.kubernetes.io/instance: cart
+    app.kubernetes.io/component: service
+    app.kubernetes.io/owner: capclouds.com
 
+spec:
+  type: ClusterIP
+  ports:
+    - name: dynamodb-svc
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app.kubernetes.io/name: carts-dynamodb
+    app.kubernetes.io/instance: cart
+    app.kubernetes.io/component: app
+    app.kubernetes.io/owner: capclouds.com 

@@ -1,1 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: carts
+  labels:
+    app.kubernetes.io/name: carts
+    app.kubernetes.io/instance: carts
+    app.kubernetes.io/component: app
+    app.kubernetes.io/owner: capclouds.com 
 
+spec:
+  replicas: 1
+  strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: carts
+      app.kubernetes.io/instance: carts
+      app.kubernetes.io/component: app
+      app.kubernetes.io/owner: capclouds.com
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: carts
+        app.kubernetes.io/instance: carts
+        app.kubernetes.io/component: app
+        app.kubernetes.io/owner: capclouds.com 
+    spec:
+      serviceAccountName: carts-sa
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: carts
+          image: "public.ecr.aws/aws-containers/retail-store-sample-cart:1.2.4"
+          imagePullPolicy: IfNotPresent
+          ports: 
+            - name: http 
+              port: 8080
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: JAVA_OPTS
+              value: -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/urandom
+          envFrom:
+            - configMapRef:
+                - name: carts-cm
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            runAsUser: 1000
+            runAsNonRootUser: true
+            readOnlyRootFilesystem: true
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 512Mi
+              cpu: 256m
+          volumeMounts:
+            - name: tmp-volume
+              mountPath: /tmp
+      volumes: 
+        - name: tmp-volume
+          emptyDir: {} 

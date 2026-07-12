@@ -1,1 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metaddata:
+  name: carts-dynamodb
+  labels:
+    app.kubernetes.io/name: carts-dynamodb
+    app.kubernetes.io/instance: cart
+    app.kubernetes.io/component: app
+    app.kubernetes.io/owner: capclouds.com   
 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: carts-dynamodb
+      app.kubernetes.io/instance: cart
+      app.kubernetes.io/component: app
+      app.kubernetes.io/owner: capclouds.com
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: carts-dynamodb
+        app.kubernetes.io/instance: cart
+        app.kubernetes.io/component: app
+        app.kubernetes.io/owner: capclouds.comcarts-dynamodb
+    spec:
+      containers:
+        - name: dynamodb 
+          image: "public.ecr.aws/aws-dynamodb-local/aws-dynamodb-local:1.25.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: dynamodb
+              port: 8000
+              protocol: TCP
