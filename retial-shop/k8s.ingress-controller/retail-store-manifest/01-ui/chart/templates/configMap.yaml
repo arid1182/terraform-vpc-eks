@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.configMap.name }}
-  labels:
-    {{- include "ui.labels" . | nindent 4 }}
-    {{- include "ui.chartLabels" . | nindent 4 }}
-data:
-  {{- toYaml .Values.configMap.data | nindent 2 }}
