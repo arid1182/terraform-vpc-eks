@@ -46,7 +46,7 @@ spec:
             - secretRef:
                 name: orders-db
             - configMapRef:
-                name: orders-cm
+                name: orders
           securityContext:
             capabilities:
               drop:

@@ -1,10 +1,11 @@
+# Source: retail-store-sample-orders-chart/templates/rabbitmq-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-rabbitmq-svc
+  name: orders-rabbitmq
   labels:
-    app.kubernetes.io/name: orders-rabbitmq-svc
-    app.kubernetes.io/instance: orders-rabbitmq-svc
+    app.kubernetes.io/name: orders-rabbitmq
+    app.kubernetes.io/instance: orders-rabbitmq
     app.kubernetes.io/component: app
     app.kubernetes.io/owner: capclouds.com
 spec:
@@ -15,13 +16,11 @@ spec:
       protocol: TCP
       name: tcp-amqp
     - port: 15672
-      protocol: TCP
       targetPort: http
+      protocol: TCP
       name: http
   selector:
     app.kubernetes.io/name: orders-rabbitmq
-    app.kubernetes.io/instance: orders
+    app.kubernetes.io/instance: orders-rabbitmq
     app.kubernetes.io/component: app
     app.kubernetes.io/owner: capclouds.com
-
-

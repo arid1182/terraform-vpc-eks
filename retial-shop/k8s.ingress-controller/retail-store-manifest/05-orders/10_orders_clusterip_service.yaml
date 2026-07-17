@@ -1,10 +1,11 @@
+# Source: retail-store-sample-orders-chart/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: orders-svc
+  name: orders
   labels:
-    app.kubernetes.io/name: orders-svc
-    app.kubernetes.io/instance: orders-svc
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/instance: orders
     app.kubernetes.io/component: app
     app.kubernetes.io/owner: capclouds.com
 spec:
