@@ -52,7 +52,7 @@ spec:
               drop:
               - ALL
             runAsUser: 1000
-            runAsNonRootUser: true
+            runAsNonRoot: true
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
           readinessProbe:

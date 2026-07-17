@@ -15,7 +15,7 @@ spec:
       app.kubernetes.io/name: checkout-redis
       app.kubernetes.io/instance: checkout
       app.kubernetes.io/component: app
-      app.kubernetes.io/owner: capclouds.co
+      app.kubernetes.io/owner: capclouds.com
   template:
     metadata:
       labels:
@@ -30,5 +30,5 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: redis
-              port: 6379
+              containerPort: 6379
               protocol: TCP

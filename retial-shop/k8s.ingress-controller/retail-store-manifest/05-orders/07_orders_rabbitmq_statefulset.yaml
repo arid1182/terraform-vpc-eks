@@ -26,8 +26,8 @@ spec:
         app.kubernetes.io/owner: capclouds.com
     spec:
       containers:
-        - name: postgress
-          image: "public.ecr.aws/docker/library/postgres:16.1"
+        - name: rabbitmq
+          image: "public.ecr.aws/docker/library/rabbitmq:3-management"
           imagePullPolicy: IfNotPresent
           ports: 
             - name: amqp
@@ -36,7 +36,7 @@ spec:
             - name: http 
               containerPort: 15672
               protocol: TCP
-          volumeMount:
+          volumeMounts:
             - name: data
               mountPath: "/var/lib/rabbitmq/mnesia"
       volumes:

@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: orders-rabbitmq-svc
   labels:
-    app.kubernetes.io/name: orders-postgresql-svc
-    app.kubernetes.io/instance: orders-postgresql
+    app.kubernetes.io/name: orders-rabbitmq-svc
+    app.kubernetes.io/instance: orders-rabbitmq-svc
     app.kubernetes.io/component: app
     app.kubernetes.io/owner: capclouds.com
 spec:
