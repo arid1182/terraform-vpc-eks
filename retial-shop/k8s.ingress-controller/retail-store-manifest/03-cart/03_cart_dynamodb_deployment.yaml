@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metaddata:
+metadata:
   name: carts-dynamodb
   labels:
     app.kubernetes.io/name: carts-dynamodb
@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/name: carts-dynamodb
         app.kubernetes.io/instance: cart
         app.kubernetes.io/component: app
-        app.kubernetes.io/owner: capclouds.comcarts-dynamodb
+        app.kubernetes.io/owner: capclouds.com
     spec:
       containers:
         - name: dynamodb 
@@ -30,5 +30,12 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: dynamodb
-              port: 8000
+              containerPort: 8000
               protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

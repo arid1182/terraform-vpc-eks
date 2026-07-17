@@ -11,9 +11,9 @@ metadata:
 spec:
   replicas: 1
   strategy:
-  type: RollingUpdate
-  rollingUpdate:
-    maxUnavailable: 1
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: carts
@@ -37,7 +37,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports: 
             - name: http 
-              port: 8080
               containerPort: 8080
               protocol: TCP
           env:
@@ -45,13 +44,13 @@ spec:
               value: -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/urandom
           envFrom:
             - configMapRef:
-                - name: carts-cm
+                name: carts-cm
           securityContext:
             capabilities:
               drop:
               - ALL
             runAsUser: 1000
-            runAsNonRootUser: true
+            runAsNonRoot: true
             readOnlyRootFilesystem: true
           readinessProbe:
             httpGet:
