@@ -1,0 +1,21 @@
+{{- if .Values.configMap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{- include "ui.configMapName" . }}
+data:
+{{- if .Values.app.endpoints.catalog }}
+  RETAIL_UI_ENDPOINTS_CATALOG: {{ .Values.app.endpoints.catalog }}
+{{- end }}
+
+{{- if .Values.app.endpoints.carts }}
+  RETAIL_UI_ENDPOINTS_CARTS: {{ .Values.app.endpoints.carts }}
+{{- end }}
+
+{{- if .Values.app.endpoints.checkout }}
+  RETAIL_UI_ENDPOINTS_CHECKOUT: {{ .Values.app.endpoints.checkout }}
+{{- end }}
+
+{{- if .Values.app.endpoints.orders }}
+  RETAIL_UI_ENDPOINTS_ORDERS: {{ .Values.app.endpoints.orders }}
+{{- end }}
