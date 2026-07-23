@@ -20,6 +20,7 @@ template:
       labels:
         {{- include "ui.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -46,9 +47,9 @@ template:
                   fieldPath: spec.nodeName
           envFrom:
             - configMapRef:
-                name: {{ include .Values.configMapName . }}
+                name: {{ include "ui.configMapName" . }}
           securityContext:
-            {{ - toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "public.ecr.aws/aws-containers/retail-store-sample-ui:1.2.4"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

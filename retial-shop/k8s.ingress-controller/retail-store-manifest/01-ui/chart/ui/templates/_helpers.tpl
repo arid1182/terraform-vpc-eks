@@ -42,13 +42,6 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
-{{- define "ui.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ui.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
 
 {{/*
 Create the name of the service account to use
@@ -79,7 +72,7 @@ Create the name of the configmap to use
 {{- if or .Values.podAnnotations .Values.metrics.enabled }}
 {{- $podAnnotations := .Values.metrics.podAnnotations }}
 {{- $metricAnnotations := .Values.metrics.podAnnotations }}
-{{- $allAnnotations = merge $podAnnotations $metricAnnotations}}
+{{- $allAnnotations := merge $podAnnotations $metricAnnotations}}
 {{- toYaml $allAnnotations }}
 {{- end }}
 {{- end }}

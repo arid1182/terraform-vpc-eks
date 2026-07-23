@@ -15,7 +15,6 @@ fullnameOverride: ""
 
 serviceAccount:
   create: true
-  automount: true
   annotations: {}
   name: ""
 
@@ -39,9 +38,19 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
 
+istio:
+  enabled: false
+  hosts: []
+
+
+
 service:
   type: ClusterIP
   port: 80
+  NodePort: {}
+  # annotations: {}
+  # loadBalancerClass: ""
+  # nodePort: 30000
 
 ingress:
   enabled: false
@@ -61,7 +70,6 @@ configMap:
   name: ""
 
 app:
-  create: true
   endpoints:
     catalog: http://catalog-svc
     carts: http://carts-svc
@@ -109,9 +117,15 @@ readinessProbe:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
   # targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 2
+  maxUnavailable: 1
+
 
 # Additional volumes on the output Deployment definition.
 volumes: []
