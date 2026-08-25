@@ -1,10 +1,9 @@
 # Helm Release Definition for ASCP (AWS Secrets and Configuration Provider)
 resource "helm_release" "aws_secrets_provider" {
   depends_on = [
-    aws_iam_role.secretstorecsi_iam_role,
-    aws_eks_node_group.main,
-    aws_eks_pod_identity_association.pia-secretstorecsi,
-    aws_eks_addon.podidentityagent
+    aws_eks_node_group.eks_nodegroups,
+    aws_eks_addon.podidentityagent,
+    helm_release.secrets_storecsi_driver
     ]
 
   name             = "secrets-provider-aws"

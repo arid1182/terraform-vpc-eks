@@ -24,8 +24,4 @@ output "public_subnet_ids" {
   description = "Public subnets for ALB, NLB, etc."
 }
 
-output "public_subnet_map" {
-  value       = data.terraform_remote_state.vpc.outputs.public_subnet_map
-  description = "Public subnets for ALB, NLB, etc."
-}
 

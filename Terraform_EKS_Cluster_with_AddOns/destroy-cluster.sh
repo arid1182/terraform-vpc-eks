@@ -2,17 +2,17 @@
 set -e
 
 echo "==============================="
-echo "STEP-1: Create VPC using Terraform"
+echo "STEP-1: Destroy EKS Cluster using Terraform"
 echo "==============================="
-cd VPC_terraform-manifests
-terraform destroy -auto-approve
+cd EKS_terraform-manifests_with_addons
+terraform destroy -auto-approve -lock=false
 
 echo
 echo "==============================="
-echo "STEP-2: Create EKS Cluster using Terraform"
+echo "STEP-2: Destroy VPC using Terraform"
 echo "==============================="
-cd ../EKS_terraform-manifests_with_addons
-terraform destroy -auto-approve
+cd ../VPC_terraform-manifests
+terraform destroy -auto-approve -lock=false
 
 echo
 echo "✅ EKS Cluster and VPC destruction completed successfully!"

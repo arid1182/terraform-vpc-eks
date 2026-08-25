@@ -15,8 +15,8 @@ depends_on = [aws_eks_node_group.eks_nodegroups]
   cluster_name                = aws_eks_cluster.main.name
   addon_name                  = "eks-pod-identity-agent"
   addon_version               = data.aws_eks_addon_version.latest.version
-  resolve_conflicts_on_update = "PRESERVE"
-  resolve_conflicts_on_create = "PRESERVE"
+  resolve_conflicts_on_update = "OVERWRITE"
+  resolve_conflicts_on_create = "OVERWRITE"
 }
 
 # Outputs

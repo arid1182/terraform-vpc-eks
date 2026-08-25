@@ -1,6 +1,6 @@
 resource "helm_release" "load_balancer_controller" {
   depends_on = [aws_iam_role.lbc_iam_role,
-    aws_eks_node_group.main,
+    aws_eks_node_group.eks_nodegroups,
     aws_eks_pod_identity_association.pia-lbc,
     aws_eks_addon.podidentityagent]
 
@@ -8,7 +8,7 @@ resource "helm_release" "load_balancer_controller" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-  version    = "1.4.7"
+  version    = "1.13.0"
   namespace  = "kube-system"
   wait       = true
   timeout    = 600
@@ -36,7 +36,7 @@ resource "helm_release" "load_balancer_controller" {
       name = "region"
       value = "${var.aws_region}"
     }
-    ]
+  ]
 }
 
 # Output:

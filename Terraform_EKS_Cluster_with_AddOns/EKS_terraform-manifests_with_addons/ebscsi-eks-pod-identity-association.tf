@@ -8,6 +8,6 @@ resource "aws_eks_pod_identity_association" "pia-ebscsi" {
 
 # Output: EBS CSI Pod Identity Association ARN
 output "ebs_csi_pod_identity_association_arn" {
-  value       = aws_eks_pod_identity_association.pia-ebscsi.arn
+  value       = aws_eks_pod_identity_association.pia-ebscsi.association_arn //fixed .arn to association_arn
   description = "The ARN of the EBS CSI Pod Identity Association"
 }

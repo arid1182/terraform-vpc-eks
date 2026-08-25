@@ -18,14 +18,14 @@ resource "aws_iam_policy" "lbc_iam_policy" {
 
 # Resource: LBC IAM Role
 resource "aws_iam_role" "lbc_iam_role" {
-  name = "${local.name}-AWSLoadBalancerControllerIAMRole"
-  path = "/"
-  assume_role_policy = data.aws_iam_policy_document.lbc_assume_role_policy.json
+  name               = "${local.name}-AWSLoadBalancerControllerIAMRole"
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json # <--- Direct reference
 
   tags = {
-    Name = "${local.name}-AWSLoadBalancerControllerIAMRole"
+    Name        = "${local.name}-AWSLoadBalancerControllerIAMRole"
     Environment = var.aws_environment
-    Component = "AWS Load Balancer Controller"
+    Component   = "AWS Load Balancer Controller"
   }
 }
 
