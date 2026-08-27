@@ -1,7 +1,7 @@
 # ExternalDNS IAM Role (for Pod Identity)
 resource "aws_iam_role" "externaldns_role" {
   name = "${local.name}-externaldns-iam-role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 # Attach AWS Managed Route53 Full Access
@@ -31,7 +31,7 @@ output "externaldns_pod_identity_association_id" {
 ##############################################
 # Discover latest ExternalDNS addon version
 ##############################################
-data "aws_eks_addon_versions" "externaldns" {
+data "aws_eks_addon_version" "externaldns" {
   addon_name = "external-dns"
   kubernetes_version = aws_eks_cluster.main.version
   most_recent = true
@@ -40,12 +40,12 @@ data "aws_eks_addon_versions" "externaldns" {
 # Install ExternalDNS Add-on
 resource "aws_eks_addon" "externaldns" {
     depends_on = [aws_eks_pod_identity_association.pia-externaldns,
-                  aws_iam_role_policy_attachment.externaldns_route53_full_access,aws_eks_node_group.main
+                  aws_iam_role_policy_attachment.externaldns_route53_full_access, aws_eks_node_group.eks_nodegroups
                   ]
                     
   cluster_name = aws_eks_cluster.main.name
   addon_name   = "external-dns"
-  addon_version = data.aws_eks_addon_versions.externaldns.version
+  addon_version = data.aws_eks_addon_version.externaldns.version
   service_account_role_arn = aws_iam_role.externaldns_role.arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
