@@ -24,7 +24,7 @@ resource "aws_ec2_tag" "eks_subnet_tag_private_elb" {
   for_each    = toset(data.terraform_remote_state.vpc.outputs.private_subnet_ids)
   resource_id = each.value
   key         = "kubernetes.io/role/internal-elb"
-  value       = "1"
+  value       = "owned"
 }
 
 resource "aws_ec2_tag" "eks_subnet_tag_private_cluster" {
